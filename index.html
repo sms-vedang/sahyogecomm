@@ -11,7 +11,7 @@
         body {
             font-family: 'Inter', sans-serif;
         }
-        .chat-window {
+        .chat-window, .modal {
             transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
         }
         .chat-bubble-user {
@@ -34,6 +34,9 @@
             0%, 80%, 100% { transform: scale(0); }
             40% { transform: scale(1.0); }
         }
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -47,11 +50,25 @@
             <div class="hidden md:flex items-center space-x-6">
                 <a href="#home" class="text-gray-600 hover:text-green-700">Home</a>
                 <a href="#products" class="text-gray-600 hover:text-green-700">Products</a>
+                <a href="#admin-panel" id="admin-panel-link" class="text-gray-600 hover:text-green-700 hidden">Admin Panel</a>
                 <a href="#about" class="text-gray-600 hover:text-green-700">About</a>
                 <a href="#contact" class="text-gray-600 hover:text-green-700">Contact</a>
             </div>
             <div class="flex items-center space-x-4">
-                 <button class="relative text-gray-600 hover:text-green-700 focus:outline-none">
+                 <!-- Logged Out View -->
+                <div id="logged-out-view" class="flex items-center space-x-2">
+                    <button id="login-btn" class="bg-green-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-green-700">Login</button>
+                    <button id="register-btn" class="text-gray-600 hover:text-green-700">Register</button>
+                </div>
+                 <!-- Logged In View -->
+                <div id="logged-in-view" class="hidden flex items-center space-x-4">
+                    <button id="profile-btn" class="text-gray-600 hover:text-green-700 font-semibold">
+                        <i class="fas fa-user-circle mr-1"></i><span id="username-display"></span>
+                    </button>
+                    <button id="logout-btn" class="bg-red-500 text-white px-4 py-2 rounded-md font-semibold hover:bg-red-600">Logout</button>
+                </div>
+
+                <button class="relative text-gray-600 hover:text-green-700 focus:outline-none">
                     <i class="fas fa-shopping-cart text-xl"></i>
                     <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
                 </button>
@@ -84,7 +101,7 @@
                         <div class="p-6">
                             <h3 class="font-semibold text-lg mb-2">Pain Relief Tablets</h3>
                             <p class="text-gray-600 mb-4">₹120.00</p>
-                            <button class="w-full bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700 transition duration-300">Add to Cart</button>
+                            <button class="w-full bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700 transition duration-300 add-to-cart-btn" data-product="Pain Relief Tablets">Add to Cart</button>
                         </div>
                     </div>
                     <!-- Product Card 2 -->
@@ -93,7 +110,7 @@
                         <div class="p-6">
                             <h3 class="font-semibold text-lg mb-2">Multivitamin Syrup</h3>
                             <p class="text-gray-600 mb-4">₹250.00</p>
-                            <button class="w-full bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700 transition duration-300">Add to Cart</button>
+                            <button class="w-full bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700 transition duration-300 add-to-cart-btn" data-product="Multivitamin Syrup">Add to Cart</button>
                         </div>
                     </div>
                     <!-- Product Card 3 -->
@@ -102,7 +119,7 @@
                         <div class="p-6">
                             <h3 class="font-semibold text-lg mb-2">Adhesive Bandages</h3>
                             <p class="text-gray-600 mb-4">₹80.00</p>
-                            <button class="w-full bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700 transition duration-300">Add to Cart</button>
+                            <button class="w-full bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700 transition duration-300 add-to-cart-btn" data-product="Adhesive Bandages">Add to Cart</button>
                         </div>
                     </div>
                     <!-- Product Card 4 -->
@@ -111,12 +128,35 @@
                         <div class="p-6">
                             <h3 class="font-semibold text-lg mb-2">Hand Sanitizer</h3>
                             <p class="text-gray-600 mb-4">₹150.00</p>
-                            <button class="w-full bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700 transition duration-300">Add to Cart</button>
+                            <button class="w-full bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700 transition duration-300 add-to-cart-btn" data-product="Hand Sanitizer">Add to Cart</button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+        
+        <!-- Admin Panel Section -->
+        <section id="admin-panel" class="py-16 bg-gray-100 hidden">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Admin Panel - Orders</h2>
+                <div class="bg-white p-8 rounded-lg shadow-md overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="p-4 font-semibold">Order ID</th>
+                                <th class="p-4 font-semibold">User</th>
+                                <th class="p-4 font-semibold">Product</th>
+                                <th class="p-4 font-semibold">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-table-body">
+                            <!-- Orders will be populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
 
         <!-- About Section -->
         <section id="about" class="bg-white py-16">
@@ -152,6 +192,73 @@
              </div>
         </section>
     </main>
+    
+    <!-- Modals -->
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center modal-backdrop">
+        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
+            <form id="login-form">
+                <div class="mb-4">
+                    <label for="login-username" class="block text-gray-700 font-semibold mb-2">Username</label>
+                    <input type="text" id="login-username" class="w-full px-4 py-2 border rounded-lg focus:outline-none" required>
+                </div>
+                <div class="mb-6">
+                    <label for="login-password" class="block text-gray-700 font-semibold mb-2">Password</label>
+                    <input type="password" id="login-password" class="w-full px-4 py-2 border rounded-lg focus:outline-none" required>
+                </div>
+                <button type="submit" class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700">Login</button>
+            </form>
+            <button class="close-modal absolute top-4 right-4 text-2xl">&times;</button>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="register-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center modal-backdrop">
+        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6 text-center">Register</h2>
+            <form id="register-form">
+                <div class="mb-4">
+                    <label for="register-username" class="block text-gray-700 font-semibold mb-2">Username</label>
+                    <input type="text" id="register-username" class="w-full px-4 py-2 border rounded-lg" required>
+                </div>
+                 <div class="mb-4">
+                    <label for="register-email" class="block text-gray-700 font-semibold mb-2">Email</label>
+                    <input type="email" id="register-email" class="w-full px-4 py-2 border rounded-lg" required>
+                </div>
+                <div class="mb-6">
+                    <label for="register-password" class="block text-gray-700 font-semibold mb-2">Password</label>
+                    <input type="password" id="register-password" class="w-full px-4 py-2 border rounded-lg" required>
+                </div>
+                <button type="submit" class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg">Register</button>
+            </form>
+            <button class="close-modal absolute top-4 right-4 text-2xl">&times;</button>
+        </div>
+    </div>
+    
+    <!-- Profile Modal -->
+    <div id="profile-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center modal-backdrop">
+        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6 text-center">My Profile</h2>
+            <form id="profile-form">
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">Username</label>
+                    <p id="profile-username" class="w-full px-4 py-2 bg-gray-100 rounded-lg"></p>
+                </div>
+                 <div class="mb-4">
+                    <label for="profile-email" class="block text-gray-700 font-semibold mb-2">Email</label>
+                    <input type="email" id="profile-email" class="w-full px-4 py-2 border rounded-lg" required>
+                </div>
+                <div class="mb-6">
+                    <label for="profile-address" class="block text-gray-700 font-semibold mb-2">Address</label>
+                    <textarea id="profile-address" rows="3" class="w-full px-4 py-2 border rounded-lg"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg">Update Profile</button>
+            </form>
+            <button class="close-modal absolute top-4 right-4 text-2xl">&times;</button>
+        </div>
+    </div>
+
 
     <!-- Add to cart notification -->
     <div id="notification" class="fixed top-20 right-5 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-50">
@@ -160,29 +267,24 @@
     
     <!-- AI Chat Agent -->
     <div id="ai-chat-container" class="fixed bottom-5 right-5 z-50">
-        <!-- Chat Button -->
         <button id="chat-button" class="bg-green-600 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center text-2xl hover:bg-green-700 transition duration-300">
             <i class="fas fa-robot"></i>
         </button>
-        <!-- Chat Window -->
         <div id="chat-window" class="chat-window hidden absolute bottom-20 right-0 w-80 sm:w-96 bg-white rounded-lg shadow-xl border border-gray-200 flex flex-col opacity-0 transform translate-y-2">
-            <!-- Header -->
             <div class="bg-green-600 text-white p-4 rounded-t-lg flex justify-between items-center">
                 <h3 class="font-semibold text-lg">Sahyog AI Assistant</h3>
                 <button id="close-chat" class="text-white text-xl">&times;</button>
             </div>
-            <!-- Messages -->
             <div id="chat-messages" class="flex-1 p-4 overflow-y-auto h-80">
                 <div class="flex mb-4">
                     <div class="chat-bubble-bot p-3 rounded-lg max-w-xs">
-                        Hello! How can I help you today? You can ask me to add items to your cart. Please note: I cannot provide medical advice.
+                        Hello! How can I help you today? You can ask me to add items to your cart or place an order. Please note: I cannot provide medical advice.
                     </div>
                 </div>
             </div>
-            <!-- Input -->
             <div class="p-4 border-t border-gray-200">
                 <div class="flex">
-                    <input type="text" id="chat-input" placeholder="Ask a question..." class="flex-1 px-4 py-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <input type="text" id="chat-input" placeholder="Ask a question..." class="flex-1 px-4 py-2 border rounded-l-lg focus:outline-none">
                     <button id="send-chat" class="bg-green-600 text-white px-4 rounded-r-lg font-semibold hover:bg-green-700">Send</button>
                 </div>
             </div>
@@ -198,214 +300,358 @@
     </footer>
 
     <script>
-        // --- AI Chat Agent Logic ---
-        const chatButton = document.getElementById('chat-button');
-        const chatWindow = document.getElementById('chat-window');
-        const closeChatButton = document.getElementById('close-chat');
-        const chatInput = document.getElementById('chat-input');
-        const sendChatButton = document.getElementById('send-chat');
-        const chatMessages = document.getElementById('chat-messages');
-        const cartCountElement = document.getElementById('cart-count');
-        const notificationElement = document.getElementById('notification');
-        
-        let cartCount = 0;
-        const apiKey = "AIzaSyATCZ7hw8zkuQaByE1LJI-GE-nMaaYlB-0"; 
+        document.addEventListener('DOMContentLoaded', () => {
 
-        // Toggle chat window
-        chatButton.addEventListener('click', () => {
-            chatWindow.classList.toggle('hidden');
-            setTimeout(() => {
-               chatWindow.classList.toggle('opacity-0');
-               chatWindow.classList.toggle('translate-y-2');
-            }, 10);
-        });
+            // --- Element Selectors ---
+            const chatButton = document.getElementById('chat-button');
+            const chatWindow = document.getElementById('chat-window');
+            const closeChatButton = document.getElementById('close-chat');
+            const chatInput = document.getElementById('chat-input');
+            const sendChatButton = document.getElementById('send-chat');
+            const chatMessages = document.getElementById('chat-messages');
+            const cartCountElement = document.getElementById('cart-count');
+            const notificationElement = document.getElementById('notification');
 
-        closeChatButton.addEventListener('click', () => {
-            chatWindow.classList.add('opacity-0');
-            chatWindow.classList.add('translate-y-2');
-            setTimeout(() => {
-                chatWindow.classList.add('hidden');
-            }, 300);
-        });
-        
-        // --- Cart and Notification Functions ---
-        function updateCartDisplay() {
-            cartCountElement.textContent = cartCount;
-            if (cartCount > 0) {
-                cartCountElement.classList.remove('hidden');
-            } else {
-                cartCountElement.classList.add('hidden');
-            }
-        }
-
-        function showNotification(message) {
-            notificationElement.textContent = message;
-            notificationElement.classList.remove('translate-x-full');
-            setTimeout(() => {
-                notificationElement.classList.add('translate-x-full');
-            }, 3000); // Hide after 3 seconds
-        }
-
-        function addToCart(productName) {
-            const products = ["Pain Relief Tablets", "Multivitamin Syrup", "Adhesive Bandages", "Hand Sanitizer"];
-            const normalizedProductName = productName.toLowerCase().trim();
-            // Find a product where the name is included in the user's query, e.g. "painkillers" matches "Pain Relief Tablets"
-            const foundProduct = products.find(p => p.toLowerCase().includes(normalizedProductName) || normalizedProductName.includes(p.split(' ')[0].toLowerCase()));
-
-            if (foundProduct) {
-                cartCount++;
-                updateCartDisplay();
-                showNotification(`${foundProduct} added to cart!`);
-                return `Successfully added ${foundProduct} to the cart.`;
-            } else {
-                return `Could not find the product "${productName}". Please choose from the featured products.`;
-            }
-        }
-
-        // Handle sending a message
-        const handleSendMessage = async () => {
-            const userMessage = chatInput.value.trim();
-            if (userMessage === '') return;
-
-            appendMessage(userMessage, 'user');
-            chatInput.value = '';
+            const loginBtn = document.getElementById('login-btn');
+            const registerBtn = document.getElementById('register-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+            const profileBtn = document.getElementById('profile-btn');
+            const loggedInView = document.getElementById('logged-in-view');
+            const loggedOutView = document.getElementById('logged-out-view');
+            const usernameDisplay = document.getElementById('username-display');
+            const adminPanelLink = document.getElementById('admin-panel-link');
+            const adminPanel = document.getElementById('admin-panel');
             
-            showTypingIndicator();
-            try {
-                const aiResponse = await getAIResponse(userMessage);
-                const part = aiResponse.candidates?.[0]?.content?.parts?.[0];
+            const loginModal = document.getElementById('login-modal');
+            const registerModal = document.getElementById('register-modal');
+            const profileModal = document.getElementById('profile-modal');
+            const closeModalBtns = document.querySelectorAll('.close-modal');
 
-                if (part && part.functionCall) {
-                    const { name, args } = part.functionCall;
-                    if (name === 'addToCart') {
-                        const productName = args.productName || '';
-                        addToCart(productName);
-                        removeTypingIndicator();
-                        // Provide a conversational confirmation
-                        appendMessage(`OK, I've added ${productName} to your cart. Anything else?`, 'bot');
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const profileForm = document.getElementById('profile-form');
+
+            // --- State Management ---
+            let cartCount = 0;
+            const apiKey = "AIzaSyATCZ7hw8zkuQaByE1LJI-GE-nMaaYlB-0"; // IMPORTANT: ADD YOUR API KEY HERE
+            
+            // --- Local Storage Initialization ---
+            const getUsers = () => JSON.parse(localStorage.getItem('sahyog_users')) || [];
+            const saveUsers = (users) => localStorage.setItem('sahyog_users', JSON.stringify(users));
+            const getCurrentUser = () => JSON.parse(localStorage.getItem('sahyog_currentUser'));
+            const setCurrentUser = (user) => localStorage.setItem('sahyog_currentUser', JSON.stringify(user));
+            const removeCurrentUser = () => localStorage.removeItem('sahyog_currentUser');
+            const getOrders = () => JSON.parse(localStorage.getItem('sahyog_orders')) || [];
+            const saveOrders = (orders) => localStorage.setItem('sahyog_orders', JSON.stringify(orders));
+
+            // --- UI Update Functions ---
+            function updateUI() {
+                const user = getCurrentUser();
+                if (user) {
+                    loggedInView.classList.remove('hidden');
+                    loggedOutView.classList.add('hidden');
+                    usernameDisplay.textContent = user.username;
+                    if (user.username === 'admin') {
+                        adminPanelLink.classList.remove('hidden');
+                        adminPanel.classList.remove('hidden');
+                        displayOrders();
+                    } else {
+                        adminPanelLink.classList.add('hidden');
+                        adminPanel.classList.add('hidden');
                     }
-                } else if (part && part.text) {
-                    removeTypingIndicator();
-                    appendMessage(part.text, 'bot');
                 } else {
-                     removeTypingIndicator();
-                     appendMessage("I'm sorry, I encountered an issue. Please try again.", 'bot');
+                    loggedInView.classList.add('hidden');
+                    loggedOutView.classList.remove('hidden');
+                    adminPanelLink.classList.add('hidden');
+                    adminPanel.classList.add('hidden');
                 }
-
-            } catch (error) {
-                removeTypingIndicator();
-                appendMessage('Sorry, something went wrong. Please try again later.', 'bot');
-                console.error('Error in handleSendMessage:', error);
-            }
-        };
-
-        sendChatButton.addEventListener('click', handleSendMessage);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                handleSendMessage();
-            }
-        });
-
-        function appendMessage(message, sender) {
-            const messageWrapper = document.createElement('div');
-            messageWrapper.classList.add('flex', 'mb-4');
-            const messageBubble = document.createElement('div');
-            messageBubble.classList.add('p-3', 'rounded-lg', 'max-w-xs');
-            messageBubble.textContent = message;
-            if (sender === 'user') {
-                messageWrapper.classList.add('justify-end');
-                messageBubble.classList.add('chat-bubble-user');
-            } else {
-                messageWrapper.classList.add('justify-start');
-                messageBubble.classList.add('chat-bubble-bot');
-            }
-            messageWrapper.appendChild(messageBubble);
-            chatMessages.appendChild(messageWrapper);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function showTypingIndicator() {
-            const typingWrapper = document.createElement('div');
-            typingWrapper.id = 'typing-indicator';
-            typingWrapper.classList.add('flex', 'mb-4', 'items-center');
-            const bubble = document.createElement('div');
-            bubble.classList.add('chat-bubble-bot', 'p-3', 'rounded-lg', 'typing-indicator');
-            bubble.innerHTML = '<span></span><span></span><span></span>';
-            typingWrapper.appendChild(bubble);
-            chatMessages.appendChild(typingWrapper);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function removeTypingIndicator() {
-            const indicator = document.getElementById('typing-indicator');
-            if (indicator) {
-                indicator.remove();
-            }
-        }
-
-        async function getAIResponse(userQuery) {
-            if (!apiKey) {
-                 throw new Error("API Key is missing.");
             }
 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+            function showModal(modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
 
-            const systemPrompt = `You are a friendly and helpful AI assistant for 'Sahyog Medical', an online pharmacy. Your role is to answer customer questions. You have one special tool: 'addToCart'.
-
-**When to use tools:**
-* If the user expresses a clear intent to add a specific, listed product to their shopping cart, you MUST use the 'addToCart' function. Examples: "Add painkillers to cart", "I want the multivitamins", "Put sanitizer in my basket".
-* Do not use the tool for vague requests like "I need some medicine". Ask for clarification first.
-
-**Store Information:**
-* **Hours:** Open 9 AM to 9 PM, Monday-Saturday.
-* **Location:** 123 Health St, Wellness City.
-* **Delivery:** We offer home delivery for orders over ₹500.
-* **Payment:** We accept cash, credit/debit cards, and UPI.
-
-**Products currently featured on the page:**
-* Pain Relief Tablets
-* Multivitamin Syrup
-* Adhesive Bandages
-* Hand Sanitizer
-
-**Medical Advice Rule:**
-* You MUST NOT provide any medical advice. If asked for a diagnosis or treatment, politely decline and strongly advise consulting a qualified doctor or pharmacist.`;
+            function hideModals() {
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                });
+            }
             
-            const payload = {
-                contents: [{ parts: [{ text: userQuery }] }],
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                },
-                tools: [{
-                    functionDeclarations: [{
-                        name: "addToCart",
-                        description: "Adds a specified product to the user's shopping cart.",
-                        parameters: {
-                            type: "OBJECT",
-                            properties: {
-                                productName: {
-                                    type: "STRING",
-                                    description: "The name of the product to add to the cart. Must be one of the featured products like 'Pain Relief Tablets', 'Multivitamin Syrup', etc."
-                                }
-                            },
-                            required: ["productName"]
-                        }
-                    }]
-                }]
-            };
+            // --- User Authentication & Profile ---
+            loginBtn.addEventListener('click', () => showModal(loginModal));
+            registerBtn.addEventListener('click', () => showModal(registerModal));
+            profileBtn.addEventListener('click', () => {
+                const user = getCurrentUser();
+                if(user) {
+                    document.getElementById('profile-username').textContent = user.username;
+                    document.getElementById('profile-email').value = user.email;
+                    document.getElementById('profile-address').value = user.address || '';
+                    showModal(profileModal);
+                }
+            });
+            
+            closeModalBtns.forEach(btn => btn.addEventListener('click', hideModals));
 
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+            registerForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = document.getElementById('register-username').value;
+                const email = document.getElementById('register-email').value;
+                const password = document.getElementById('register-password').value;
+                let users = getUsers();
+                if (users.find(u => u.username === username)) {
+                    showNotification('Username already exists!');
+                    return;
+                }
+                const newUser = { username, email, password, address: '' };
+                users.push(newUser);
+                saveUsers(users);
+                setCurrentUser(newUser);
+                hideModals();
+                updateUI();
+                showNotification(`Welcome, ${username}!`);
             });
 
-            if (!response.ok) {
-                throw new Error(`API request failed with status ${response.status}`);
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = document.getElementById('login-username').value;
+                const password = document.getElementById('login-password').value;
+                let users = getUsers();
+                const user = users.find(u => u.username === username && u.password === password);
+                if (user) {
+                    setCurrentUser(user);
+                    hideModals();
+                    updateUI();
+                    showNotification(`Welcome back, ${username}!`);
+                } else {
+                    showNotification('Invalid username or password.');
+                }
+            });
+
+            logoutBtn.addEventListener('click', () => {
+                removeCurrentUser();
+                updateUI();
+                showNotification('Logged out successfully.');
+            });
+
+            profileForm.addEventListener('submit', e => {
+                e.preventDefault();
+                const user = getCurrentUser();
+                if (!user) return;
+
+                const email = document.getElementById('profile-email').value;
+                const address = document.getElementById('profile-address').value;
+
+                let users = getUsers();
+                const userIndex = users.findIndex(u => u.username === user.username);
+                
+                users[userIndex].email = email;
+                users[userIndex].address = address;
+
+                saveUsers(users);
+                setCurrentUser(users[userIndex]);
+                hideModals();
+                updateUI();
+                showNotification('Profile updated!');
+            });
+            
+            // --- Admin Panel ---
+            function displayOrders() {
+                const orders = getOrders();
+                const tableBody = document.getElementById('orders-table-body');
+                tableBody.innerHTML = '';
+                if(orders.length === 0){
+                    tableBody.innerHTML = '<tr><td colspan="4" class="text-center p-4">No orders yet.</td></tr>';
+                    return;
+                }
+                orders.forEach(order => {
+                    const row = `
+                        <tr>
+                            <td class="p-4 border-b">${order.id}</td>
+                            <td class="p-4 border-b">${order.user}</td>
+                            <td class="p-4 border-b">${order.product}</td>
+                            <td class="p-4 border-b">${new Date(order.timestamp).toLocaleString()}</td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
             }
 
-            return response.json();
-        }
+            // --- Chat, Cart, Notification Functions ---
+            function updateCartDisplay() {
+                cartCountElement.textContent = cartCount;
+                if (cartCount > 0) cartCountElement.classList.remove('hidden');
+                else cartCountElement.classList.add('hidden');
+            }
+
+            function showNotification(message) {
+                notificationElement.textContent = message;
+                notificationElement.classList.remove('translate-x-full');
+                setTimeout(() => {
+                    notificationElement.classList.add('translate-x-full');
+                }, 3000);
+            }
+
+            function addToCart(productName) {
+                const products = ["Pain Relief Tablets", "Multivitamin Syrup", "Adhesive Bandages", "Hand Sanitizer"];
+                const foundProduct = products.find(p => p.toLowerCase().includes(productName.toLowerCase()));
+                if (foundProduct) {
+                    cartCount++;
+                    updateCartDisplay();
+                    showNotification(`${foundProduct} added to cart!`);
+                } else {
+                    showNotification(`Could not find "${productName}".`);
+                }
+            }
+             document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    addToCart(button.dataset.product);
+                });
+            });
+
+            function placeOrder(productName) {
+                const user = getCurrentUser();
+                if (!user) {
+                    return "You need to be logged in to place an order. Please log in first.";
+                }
+                const products = ["Pain Relief Tablets", "Multivitamin Syrup", "Adhesive Bandages", "Hand Sanitizer"];
+                const foundProduct = products.find(p => p.toLowerCase().includes(productName.toLowerCase()));
+
+                if (foundProduct) {
+                    let orders = getOrders();
+                    const newOrder = {
+                        id: 'SM' + Date.now(),
+                        user: user.username,
+                        product: foundProduct,
+                        timestamp: new Date().toISOString()
+                    };
+                    orders.push(newOrder);
+                    saveOrders(orders);
+                    showNotification(`Order placed for ${foundProduct}!`);
+                     if(user.username === 'admin') displayOrders(); // Refresh admin view
+                    return `Your order for ${foundProduct} has been placed successfully.`;
+                } else {
+                    return `Sorry, we could not find the product "${productName}".`;
+                }
+            }
+            
+             const handleSendMessage = async () => {
+                const userMessage = chatInput.value.trim();
+                if (userMessage === '') return;
+                appendMessage(userMessage, 'user');
+                chatInput.value = '';
+                showTypingIndicator();
+                try {
+                    const aiResponse = await getAIResponse(userMessage);
+                    const part = aiResponse.candidates?.[0]?.content?.parts?.[0];
+
+                    removeTypingIndicator();
+                    if (part?.functionCall) {
+                        const { name, args } = part.functionCall;
+                        let resultMessage = "An error occurred.";
+                        if (name === 'addToCart') {
+                           addToCart(args.productName || '');
+                           resultMessage = `I've added ${args.productName} to your cart. Is there anything else?`;
+                        } else if (name === 'placeOrder') {
+                           resultMessage = placeOrder(args.productName || '');
+                        }
+                        appendMessage(resultMessage, 'bot');
+
+                    } else if (part?.text) {
+                        appendMessage(part.text, 'bot');
+                    } else {
+                         appendMessage("I'm sorry, I encountered an issue.", 'bot');
+                    }
+                } catch (error) {
+                    removeTypingIndicator();
+                    appendMessage('Sorry, something went wrong.', 'bot');
+                    console.error('Error:', error);
+                }
+            };
+            
+            // --- Event Listeners for Chat ---
+            chatButton.addEventListener('click', () => {
+                chatWindow.classList.toggle('hidden');
+                setTimeout(() => {
+                   chatWindow.classList.toggle('opacity-0');
+                   chatWindow.classList.toggle('translate-y-2');
+                }, 10);
+            });
+            closeChatButton.addEventListener('click', () => {
+                chatWindow.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => chatWindow.classList.add('hidden'), 300);
+            });
+            sendChatButton.addEventListener('click', handleSendMessage);
+            chatInput.addEventListener('keypress', (e) => e.key === 'Enter' && handleSendMessage());
+
+            function appendMessage(message, sender) {
+                const msgWrapper = document.createElement('div');
+                msgWrapper.className = `flex mb-4 ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
+                const msgBubble = document.createElement('div');
+                msgBubble.className = `p-3 rounded-lg max-w-xs ${sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-bot'}`;
+                msgBubble.textContent = message;
+                msgWrapper.appendChild(msgBubble);
+                chatMessages.appendChild(msgWrapper);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function showTypingIndicator() {
+                const indicator = `<div id="typing-indicator" class="flex mb-4 items-center"><div class="chat-bubble-bot p-3 rounded-lg typing-indicator"><span></span><span></span><span></span></div></div>`;
+                chatMessages.insertAdjacentHTML('beforeend', indicator);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function removeTypingIndicator() {
+                document.getElementById('typing-indicator')?.remove();
+            }
+
+            async function getAIResponse(userQuery) {
+                if (!apiKey) throw new Error("API Key is missing.");
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+                const systemPrompt = `You are an AI assistant for 'Sahyog Medical'. Your capabilities include answering questions and helping users with their shopping cart and orders using specialized tools.
+
+**Tools:**
+* 'addToCart': Use when a user wants to add a product to their cart. Example: "Add painkillers to my cart".
+* 'placeOrder': Use when a user explicitly wants to buy or order a product. This is a final action. Example: "I want to buy the sanitizer", "Order the multivitamin syrup".
+
+**Logic:**
+* Before placing an order, confirm if the user is logged in. The 'placeOrder' function will handle this check.
+* **Products:** Pain Relief Tablets, Multivitamin Syrup, Adhesive Bandages, Hand Sanitizer.
+* **Store Info:** Open 9 AM-9 PM, Mon-Sat. Location: 123 Health St, Wellness City.
+* **Medical Advice Rule:** NEVER provide medical advice. Politely decline and advise consulting a doctor.`;
+                
+                const payload = {
+                    contents: [{ parts: [{ text: userQuery }] }],
+                    systemInstruction: { parts: [{ text: systemPrompt }] },
+                    tools: [{
+                        functionDeclarations: [
+                            {
+                                name: "addToCart",
+                                description: "Adds a product to the cart.",
+                                parameters: { type: "OBJECT", properties: { productName: { type: "STRING", description: "Product to add." }}, required: ["productName"] }
+                            },
+                            {
+                                name: "placeOrder",
+                                description: "Places an order for a product for the logged-in user.",
+                                parameters: { type: "OBJECT", properties: { productName: { type: "STRING", description: "Product to order." }}, required: ["productName"] }
+                            }
+                        ]
+                    }]
+                };
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) throw new Error(`API Error: ${response.status}`);
+                return response.json();
+            }
+
+            // Initial UI setup
+            updateUI();
+        });
     </script>
 
 </body>
