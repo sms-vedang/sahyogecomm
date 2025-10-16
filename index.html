@@ -68,7 +68,7 @@
                     <button id="logout-btn" class="bg-red-500 text-white px-4 py-2 rounded-md font-semibold hover:bg-red-600">Logout</button>
                 </div>
 
-                <button class="relative text-gray-600 hover:text-green-700 focus:outline-none">
+                <button id="cart-btn" class="relative text-gray-600 hover:text-green-700 focus:outline-none">
                     <i class="fas fa-shopping-cart text-xl"></i>
                     <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
                 </button>
@@ -196,7 +196,7 @@
     <!-- Modals -->
     <!-- Login Modal -->
     <div id="login-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center modal-backdrop">
-        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md">
+        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md relative">
             <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
             <form id="login-form">
                 <div class="mb-4">
@@ -215,7 +215,7 @@
 
     <!-- Register Modal -->
     <div id="register-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center modal-backdrop">
-        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md">
+        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md relative">
             <h2 class="text-2xl font-bold mb-6 text-center">Register</h2>
             <form id="register-form">
                 <div class="mb-4">
@@ -238,7 +238,7 @@
     
     <!-- Profile Modal -->
     <div id="profile-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center modal-backdrop">
-        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md">
+        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md relative">
             <h2 class="text-2xl font-bold mb-6 text-center">My Profile</h2>
             <form id="profile-form">
                 <div class="mb-4">
@@ -255,6 +255,18 @@
                 </div>
                 <button type="submit" class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg">Update Profile</button>
             </form>
+            <button class="close-modal absolute top-4 right-4 text-2xl">&times;</button>
+        </div>
+    </div>
+    
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center modal-backdrop">
+        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md relative">
+            <h2 class="text-2xl font-bold mb-6 text-center">Your Shopping Cart</h2>
+            <div id="cart-items-container" class="mb-6 max-h-64 overflow-y-auto">
+                <!-- Cart items will be populated by JS -->
+            </div>
+            <button id="place-order-from-cart-btn" class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700">Place Order</button>
             <button class="close-modal absolute top-4 right-4 text-2xl">&times;</button>
         </div>
     </div>
@@ -311,6 +323,7 @@
             const chatMessages = document.getElementById('chat-messages');
             const cartCountElement = document.getElementById('cart-count');
             const notificationElement = document.getElementById('notification');
+            const cartBtn = document.getElementById('cart-btn');
 
             const loginBtn = document.getElementById('login-btn');
             const registerBtn = document.getElementById('register-btn');
@@ -325,6 +338,7 @@
             const loginModal = document.getElementById('login-modal');
             const registerModal = document.getElementById('register-modal');
             const profileModal = document.getElementById('profile-modal');
+            const cartModal = document.getElementById('cart-modal');
             const closeModalBtns = document.querySelectorAll('.close-modal');
 
             const loginForm = document.getElementById('login-form');
@@ -332,7 +346,7 @@
             const profileForm = document.getElementById('profile-form');
 
             // --- State Management ---
-            let cartCount = 0;
+            let cart = [];
             const apiKey = "AIzaSyATCZ7hw8zkuQaByE1LJI-GE-nMaaYlB-0"; // IMPORTANT: ADD YOUR API KEY HERE
             
             // --- Local Storage Initialization ---
@@ -343,6 +357,15 @@
             const removeCurrentUser = () => localStorage.removeItem('sahyog_currentUser');
             const getOrders = () => JSON.parse(localStorage.getItem('sahyog_orders')) || [];
             const saveOrders = (orders) => localStorage.setItem('sahyog_orders', JSON.stringify(orders));
+
+            function initializeAdmin() {
+                let users = getUsers();
+                if (!users.find(u => u.username === 'admin')) {
+                    users.push({ username: 'admin', email: 'admin@sahyog.com', password: 'adminsahyog', address: 'Admin Address' });
+                    saveUsers(users);
+                    console.log('Admin user created.');
+                }
+            }
 
             // --- UI Update Functions ---
             function updateUI() {
@@ -392,6 +415,11 @@
                 }
             });
             
+            cartBtn.addEventListener('click', () => {
+                displayCartItems();
+                showModal(cartModal);
+            });
+
             closeModalBtns.forEach(btn => btn.addEventListener('click', hideModals));
 
             registerForm.addEventListener('submit', (e) => {
@@ -465,7 +493,7 @@
                     tableBody.innerHTML = '<tr><td colspan="4" class="text-center p-4">No orders yet.</td></tr>';
                     return;
                 }
-                orders.forEach(order => {
+                orders.slice().reverse().forEach(order => {
                     const row = `
                         <tr>
                             <td class="p-4 border-b">${order.id}</td>
@@ -480,9 +508,24 @@
 
             // --- Chat, Cart, Notification Functions ---
             function updateCartDisplay() {
-                cartCountElement.textContent = cartCount;
-                if (cartCount > 0) cartCountElement.classList.remove('hidden');
+                cartCountElement.textContent = cart.length;
+                if (cart.length > 0) cartCountElement.classList.remove('hidden');
                 else cartCountElement.classList.add('hidden');
+            }
+
+            function displayCartItems() {
+                const cartItemsContainer = document.getElementById('cart-items-container');
+                cartItemsContainer.innerHTML = '';
+                if (cart.length === 0) {
+                    cartItemsContainer.innerHTML = '<p class="text-gray-500 text-center">Your cart is empty.</p>';
+                    return;
+                }
+                cart.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'flex justify-between items-center py-2 border-b';
+                    itemElement.textContent = item;
+                    cartItemsContainer.appendChild(itemElement);
+                });
             }
 
             function showNotification(message) {
@@ -497,7 +540,7 @@
                 const products = ["Pain Relief Tablets", "Multivitamin Syrup", "Adhesive Bandages", "Hand Sanitizer"];
                 const foundProduct = products.find(p => p.toLowerCase().includes(productName.toLowerCase()));
                 if (foundProduct) {
-                    cartCount++;
+                    cart.push(foundProduct);
                     updateCartDisplay();
                     showNotification(`${foundProduct} added to cart!`);
                 } else {
@@ -650,6 +693,7 @@
             }
 
             // Initial UI setup
+            initializeAdmin();
             updateUI();
         });
     </script>
