@@ -10,33 +10,21 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
         }
         .chat-window, .modal {
             transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
         }
-        .chat-bubble-user {
-            background-color: #dcf8c6;
-        }
-        .chat-bubble-bot {
-            background-color: #f1f0f0;
-        }
+        .chat-bubble-user { background-color: #dcf8c6; }
+        .chat-bubble-bot { background-color: #f1f0f0; }
         .typing-indicator span {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: #9ca3af;
-            animation: bounce 1.4s infinite ease-in-out both;
+            display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+            background-color: #9ca3af; animation: bounce 1.4s infinite ease-in-out both;
         }
         .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
         .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
-        @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1.0); }
-        }
-        .modal-backdrop {
-            background-color: rgba(0, 0, 0, 0.5);
-        }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1.0); } }
+        .modal-backdrop { background-color: rgba(0, 0, 0, 0.5); }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -44,9 +32,7 @@
     <!-- Header -->
     <header class="bg-white shadow-md sticky top-0 z-50">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-2xl font-bold text-green-700">
-                <i class="fas fa-heartbeat mr-2"></i>Sahyog Medical
-            </div>
+            <div class="text-2xl font-bold text-green-700"><i class="fas fa-heartbeat mr-2"></i>Sahyog Medical</div>
             <div class="hidden md:flex items-center space-x-6">
                 <a href="#home" class="text-gray-600 hover:text-green-700">Home</a>
                 <a href="#products" class="text-gray-600 hover:text-green-700">Products</a>
@@ -55,649 +41,503 @@
                 <a href="#contact" class="text-gray-600 hover:text-green-700">Contact</a>
             </div>
             <div class="flex items-center space-x-4">
-                 <!-- Logged Out View -->
                 <div id="logged-out-view" class="flex items-center space-x-2">
                     <button id="login-btn" class="bg-green-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-green-700">Login</button>
                     <button id="register-btn" class="text-gray-600 hover:text-green-700">Register</button>
                 </div>
-                 <!-- Logged In View -->
                 <div id="logged-in-view" class="hidden flex items-center space-x-4">
-                    <button id="profile-btn" class="text-gray-600 hover:text-green-700 font-semibold">
-                        <i class="fas fa-user-circle mr-1"></i><span id="username-display"></span>
-                    </button>
+                    <button id="profile-btn" class="text-gray-600 hover:text-green-700 font-semibold"><i class="fas fa-user-circle mr-1"></i><span id="username-display"></span></button>
                     <button id="logout-btn" class="bg-red-500 text-white px-4 py-2 rounded-md font-semibold hover:bg-red-600">Logout</button>
                 </div>
-
                 <button id="cart-btn" class="relative text-gray-600 hover:text-green-700 focus:outline-none">
                     <i class="fas fa-shopping-cart text-xl"></i>
                     <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
                 </button>
-                <button class="md:hidden text-gray-600 hover:text-green-700">
-                    <i class="fas fa-bars"></i>
-                </button>
+                <button id="mobile-menu-btn" class="md:hidden text-gray-600 hover:text-green-700"><i class="fas fa-bars"></i></button>
             </div>
         </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-4 space-y-2">
+             <a href="#home" class="block text-gray-600 hover:text-green-700">Home</a>
+             <a href="#products" class="block text-gray-600 hover:text-green-700">Products</a>
+             <a href="#admin-panel" id="admin-panel-link-mobile" class="text-gray-600 hover:text-green-700 hidden">Admin Panel</a>
+             <a href="#about" class="block text-gray-600 hover:text-green-700">About</a>
+             <a href="#contact" class="block text-gray-600 hover:text-green-700">Contact</a>
+        </div>
     </header>
 
     <!-- Main Content -->
     <main>
-        <!-- Hero Section -->
-        <section id="home" class="bg-green-100 py-20">
-            <div class="container mx-auto px-6 text-center">
-                <h1 class="text-4xl md:text-5xl font-bold text-green-800 mb-4">Your Trusted Health Partner</h1>
-                <p class="text-lg text-gray-700 mb-8">Providing quality medicines and healthcare products with care.</p>
-                <a href="#products" class="bg-green-600 text-white font-semibold px-8 py-3 rounded-full hover:bg-green-700 transition duration-300">Shop Now</a>
-            </div>
-        </section>
-
-        <!-- Products Section -->
-        <section id="products" class="py-16">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Featured Products</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                    <!-- Product Card 1 -->
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition duration-300">
-                        <img src="https://placehold.co/400x300/e2e8f0/333333?text=Painkiller" alt="Painkiller" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="font-semibold text-lg mb-2">Pain Relief Tablets</h3>
-                            <p class="text-gray-600 mb-4">₹120.00</p>
-                            <button class="w-full bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700 transition duration-300 add-to-cart-btn" data-product="Pain Relief Tablets">Add to Cart</button>
-                        </div>
-                    </div>
-                    <!-- Product Card 2 -->
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition duration-300">
-                        <img src="https://placehold.co/400x300/e2e8f0/333333?text=Vitamins" alt="Vitamins" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="font-semibold text-lg mb-2">Multivitamin Syrup</h3>
-                            <p class="text-gray-600 mb-4">₹250.00</p>
-                            <button class="w-full bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700 transition duration-300 add-to-cart-btn" data-product="Multivitamin Syrup">Add to Cart</button>
-                        </div>
-                    </div>
-                    <!-- Product Card 3 -->
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition duration-300">
-                        <img src="https://placehold.co/400x300/e2e8f0/333333?text=Bandages" alt="Bandages" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="font-semibold text-lg mb-2">Adhesive Bandages</h3>
-                            <p class="text-gray-600 mb-4">₹80.00</p>
-                            <button class="w-full bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700 transition duration-300 add-to-cart-btn" data-product="Adhesive Bandages">Add to Cart</button>
-                        </div>
-                    </div>
-                    <!-- Product Card 4 -->
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition duration-300">
-                        <img src="https://placehold.co/400x300/e2e8f0/333333?text=Sanitizer" alt="Sanitizer" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="font-semibold text-lg mb-2">Hand Sanitizer</h3>
-                            <p class="text-gray-600 mb-4">₹150.00</p>
-                            <button class="w-full bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700 transition duration-300 add-to-cart-btn" data-product="Hand Sanitizer">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Admin Panel Section -->
-        <section id="admin-panel" class="py-16 bg-gray-100 hidden">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Admin Panel - Orders</h2>
-                <div class="bg-white p-8 rounded-lg shadow-md overflow-x-auto">
-                    <table class="w-full text-left">
-                        <thead>
-                            <tr class="bg-gray-200">
-                                <th class="p-4 font-semibold">Order ID</th>
-                                <th class="p-4 font-semibold">User</th>
-                                <th class="p-4 font-semibold">Product</th>
-                                <th class="p-4 font-semibold">Date</th>
-                            </tr>
-                        </thead>
-                        <tbody id="orders-table-body">
-                            <!-- Orders will be populated by JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- About Section -->
-        <section id="about" class="bg-white py-16">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">About Sahyog Medical</h2>
-                <p class="max-w-3xl mx-auto text-center text-gray-600 leading-relaxed">
-                    Sahyog Medical has been serving the community for over a decade, committed to providing accessible and affordable healthcare solutions. We believe in building lasting relationships with our customers by offering genuine products and expert advice. Our mission is to be your most trusted partner in health and wellness.
-                </p>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="bg-gray-50 py-16">
-             <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Get In Touch</h2>
-                <div class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-md">
-                   <form>
-                       <div class="mb-4">
-                           <label for="name" class="block text-gray-700 font-semibold mb-2">Name</label>
-                           <input type="text" id="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Your Name">
-                       </div>
-                       <div class="mb-4">
-                           <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
-                           <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Your Email">
-                       </div>
-                       <div class="mb-6">
-                           <label for="message" class="block text-gray-700 font-semibold mb-2">Message</label>
-                           <textarea id="message" rows="4" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Your Message"></textarea>
-                       </div>
-                       <button type="submit" class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition duration-300">Send Message</button>
-                   </form>
-                </div>
-             </div>
-        </section>
+        <section id="home" class="bg-green-100 py-20"><div class="container mx-auto px-6 text-center"><h1 class="text-4xl md:text-5xl font-bold text-green-800 mb-4">Your Trusted Health Partner</h1><p class="text-lg text-gray-700 mb-8">Providing quality medicines and healthcare products with care.</p><a href="#products" class="bg-green-600 text-white font-semibold px-8 py-3 rounded-full hover:bg-green-700 transition duration-300">Shop Now</a></div></section>
+        <section id="products" class="py-16"><div class="container mx-auto px-6"><h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Featured Products</h2><div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"><p class="text-center col-span-full">Loading products...</p></div></div></section>
+        <section id="admin-panel" class="py-16 bg-gray-100 hidden"><div class="container mx-auto px-6"><h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Admin Panel</h2><div class="bg-white p-8 rounded-lg shadow-md mb-12"><h3 class="text-2xl font-bold text-gray-800 mb-6">Manage Products</h3><form id="add-product-form" class="grid grid-cols-1 md:grid-cols-2 gap-6"><input type="hidden" id="product-id"><div><label for="product-name" class="block font-semibold mb-2">Product Name</label><input type="text" id="product-name" class="w-full p-2 border rounded" required></div><div><label for="product-price" class="block font-semibold mb-2">Price (₹)</label><input type="number" id="product-price" step="0.01" class="w-full p-2 border rounded" required></div><div class="md:col-span-2"><label for="product-image" class="block font-semibold mb-2">Image URL</label><input type="url" id="product-image" class="w-full p-2 border rounded" placeholder="https://placehold.co/..."></div><div class="md:col-span-2 flex space-x-4"><button type="submit" class="w-full bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700">Save Product</button><button type="button" id="clear-product-form" class="w-full bg-gray-500 text-white font-semibold py-2 rounded-lg hover:bg-gray-600">Clear</button></div></form><div id="admin-product-list" class="mt-8"></div></div><div class="bg-white p-8 rounded-lg shadow-md overflow-x-auto"><h3 class="text-2xl font-bold text-gray-800 mb-6">Recent Orders</h3><table class="w-full text-left"><thead><tr class="bg-gray-200"><th class="p-4 font-semibold">Order ID</th><th class="p-4 font-semibold">User Email</th><th class="p-4 font-semibold">Products</th><th class="p-4 font-semibold">Total</th><th class="p-4 font-semibold">Date</th></tr></thead><tbody id="orders-table-body"></tbody></table></div></div></section>
+        <section id="about" class="bg-white py-16"><div class="container mx-auto px-6"><h2 class="text-3xl font-bold text-center text-gray-800 mb-8">About Sahyog Medical</h2><p class="max-w-3xl mx-auto text-center text-gray-600 leading-relaxed">Sahyog Medical has been serving the community for over a decade, committed to providing accessible and affordable healthcare solutions. We believe in building lasting relationships with our customers by offering genuine products and expert advice. Our mission is to be your most trusted partner in health and wellness.</p></div></section>
+        <section id="contact" class="bg-gray-50 py-16"><div class="container mx-auto px-6"><h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Get In Touch</h2><div class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-md"><form><div class="mb-4"><label for="name" class="block text-gray-700 font-semibold mb-2">Name</label><input type="text" id="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Your Name"></div><div class="mb-4"><label for="email-contact" class="block text-gray-700 font-semibold mb-2">Email</label><input type="email" id="email-contact" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Your Email"></div><div class="mb-6"><label for="message" class="block text-gray-700 font-semibold mb-2">Message</label><textarea id="message" rows="4" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Your Message"></textarea></div><button type="submit" class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition duration-300">Send Message</button></form></div></div></section>
     </main>
     
     <!-- Modals -->
-    <!-- Login Modal -->
-    <div id="login-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center modal-backdrop">
-        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md relative">
-            <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
-            <form id="login-form">
-                <div class="mb-4">
-                    <label for="login-username" class="block text-gray-700 font-semibold mb-2">Username</label>
-                    <input type="text" id="login-username" class="w-full px-4 py-2 border rounded-lg focus:outline-none" required>
-                </div>
-                <div class="mb-6">
-                    <label for="login-password" class="block text-gray-700 font-semibold mb-2">Password</label>
-                    <input type="password" id="login-password" class="w-full px-4 py-2 border rounded-lg focus:outline-none" required>
-                </div>
-                <button type="submit" class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700">Login</button>
-            </form>
-            <button class="close-modal absolute top-4 right-4 text-2xl">&times;</button>
-        </div>
-    </div>
+    <div id="login-modal" class="modal fixed inset-0 z-[100] hidden items-center justify-center modal-backdrop"><div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md relative"><h2 class="text-2xl font-bold mb-6 text-center">Login</h2><form id="login-form"><div class="mb-4"><label for="login-email" class="block text-gray-700 font-semibold mb-2">Email</label><input type="email" id="login-email" class="w-full px-4 py-2 border rounded-lg focus:outline-none" required></div><div class="mb-6"><label for="login-password" class="block text-gray-700 font-semibold mb-2">Password</label><input type="password" id="login-password" class="w-full px-4 py-2 border rounded-lg focus:outline-none" required></div><button type="submit" class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700">Login</button></form><button class="close-modal absolute top-4 right-4 text-2xl">&times;</button></div></div>
+    <div id="register-modal" class="modal fixed inset-0 z-[100] hidden items-center justify-center modal-backdrop"><div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md relative"><h2 class="text-2xl font-bold mb-6 text-center">Register</h2><form id="register-form"><div class="mb-4"><label for="register-email" class="block text-gray-700 font-semibold mb-2">Email</label><input type="email" id="register-email" class="w-full px-4 py-2 border rounded-lg" required></div><div class="mb-6"><label for="register-password" class="block text-gray-700 font-semibold mb-2">Password</label><input type="password" id="register-password" class="w-full px-4 py-2 border rounded-lg" required></div><button type="submit" class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg">Register</button></form><button class="close-modal absolute top-4 right-4 text-2xl">&times;</button></div></div>
+    <div id="profile-modal" class="modal fixed inset-0 z-[100] hidden items-center justify-center modal-backdrop"><div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md relative"><h2 class="text-2xl font-bold mb-6 text-center">My Profile</h2><form id="profile-form"><div class="mb-4"><label class="block text-gray-700 font-semibold mb-2">Email</label><p id="profile-email-display" class="w-full px-4 py-2 bg-gray-100 rounded-lg"></p></div><div class="mb-6"><label for="profile-address" class="block text-gray-700 font-semibold mb-2">Address</label><textarea id="profile-address" rows="3" class="w-full px-4 py-2 border rounded-lg"></textarea></div><button type="submit" class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg">Update Profile</button></form><button class="close-modal absolute top-4 right-4 text-2xl">&times;</button></div></div>
+    <div id="cart-modal" class="modal fixed inset-0 z-[100] hidden items-center justify-center modal-backdrop"><div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-lg relative"><h2 class="text-2xl font-bold mb-6 text-center">Your Shopping Cart</h2><div id="cart-items-container" class="mb-6 max-h-64 overflow-y-auto"></div><div class="text-right font-bold text-xl mb-6">Total: ₹<span id="cart-total">0.00</span></div><button id="place-order-from-cart-btn" class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700">Place Order</button><button class="close-modal absolute top-4 right-4 text-2xl">&times;</button></div></div>
 
-    <!-- Register Modal -->
-    <div id="register-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center modal-backdrop">
-        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md relative">
-            <h2 class="text-2xl font-bold mb-6 text-center">Register</h2>
-            <form id="register-form">
-                <div class="mb-4">
-                    <label for="register-username" class="block text-gray-700 font-semibold mb-2">Username</label>
-                    <input type="text" id="register-username" class="w-full px-4 py-2 border rounded-lg" required>
-                </div>
-                 <div class="mb-4">
-                    <label for="register-email" class="block text-gray-700 font-semibold mb-2">Email</label>
-                    <input type="email" id="register-email" class="w-full px-4 py-2 border rounded-lg" required>
-                </div>
-                <div class="mb-6">
-                    <label for="register-password" class="block text-gray-700 font-semibold mb-2">Password</label>
-                    <input type="password" id="register-password" class="w-full px-4 py-2 border rounded-lg" required>
-                </div>
-                <button type="submit" class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg">Register</button>
-            </form>
-            <button class="close-modal absolute top-4 right-4 text-2xl">&times;</button>
-        </div>
-    </div>
-    
-    <!-- Profile Modal -->
-    <div id="profile-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center modal-backdrop">
-        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md relative">
-            <h2 class="text-2xl font-bold mb-6 text-center">My Profile</h2>
-            <form id="profile-form">
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-semibold mb-2">Username</label>
-                    <p id="profile-username" class="w-full px-4 py-2 bg-gray-100 rounded-lg"></p>
-                </div>
-                 <div class="mb-4">
-                    <label for="profile-email" class="block text-gray-700 font-semibold mb-2">Email</label>
-                    <input type="email" id="profile-email" class="w-full px-4 py-2 border rounded-lg" required>
-                </div>
-                <div class="mb-6">
-                    <label for="profile-address" class="block text-gray-700 font-semibold mb-2">Address</label>
-                    <textarea id="profile-address" rows="3" class="w-full px-4 py-2 border rounded-lg"></textarea>
-                </div>
-                <button type="submit" class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg">Update Profile</button>
-            </form>
-            <button class="close-modal absolute top-4 right-4 text-2xl">&times;</button>
-        </div>
-    </div>
-    
-    <!-- Cart Modal -->
-    <div id="cart-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center modal-backdrop">
-        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md relative">
-            <h2 class="text-2xl font-bold mb-6 text-center">Your Shopping Cart</h2>
-            <div id="cart-items-container" class="mb-6 max-h-64 overflow-y-auto">
-                <!-- Cart items will be populated by JS -->
-            </div>
-            <button id="place-order-from-cart-btn" class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700">Place Order</button>
-            <button class="close-modal absolute top-4 right-4 text-2xl">&times;</button>
-        </div>
-    </div>
-
-
-    <!-- Add to cart notification -->
-    <div id="notification" class="fixed top-20 right-5 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-50">
-        <!-- Message will be set by JS -->
-    </div>
-    
-    <!-- AI Chat Agent -->
+    <!-- Notification & AI Chat -->
+    <div id="notification" class="fixed top-20 right-5 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-[101]"></div>
     <div id="ai-chat-container" class="fixed bottom-5 right-5 z-50">
-        <button id="chat-button" class="bg-green-600 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center text-2xl hover:bg-green-700 transition duration-300">
-            <i class="fas fa-robot"></i>
-        </button>
+        <button id="chat-button" class="bg-green-600 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center text-2xl hover:bg-green-700 transition duration-300"><i class="fas fa-robot"></i></button>
         <div id="chat-window" class="chat-window hidden absolute bottom-20 right-0 w-80 sm:w-96 bg-white rounded-lg shadow-xl border border-gray-200 flex flex-col opacity-0 transform translate-y-2">
-            <div class="bg-green-600 text-white p-4 rounded-t-lg flex justify-between items-center">
-                <h3 class="font-semibold text-lg">Sahyog AI Assistant</h3>
-                <button id="close-chat" class="text-white text-xl">&times;</button>
-            </div>
-            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto h-80">
-                <div class="flex mb-4">
-                    <div class="chat-bubble-bot p-3 rounded-lg max-w-xs">
-                        Hello! How can I help you today? You can ask me to add items to your cart or place an order. Please note: I cannot provide medical advice.
-                    </div>
-                </div>
-            </div>
-            <div class="p-4 border-t border-gray-200">
-                <div class="flex">
-                    <input type="text" id="chat-input" placeholder="Ask a question..." class="flex-1 px-4 py-2 border rounded-l-lg focus:outline-none">
-                    <button id="send-chat" class="bg-green-600 text-white px-4 rounded-r-lg font-semibold hover:bg-green-700">Send</button>
-                </div>
-            </div>
+            <div class="bg-green-600 text-white p-4 rounded-t-lg flex justify-between items-center"><h3 class="font-semibold text-lg">Sahyog AI Assistant</h3><button id="close-chat" class="text-white text-xl">&times;</button></div>
+            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto h-80"><div class="flex mb-4"><div class="chat-bubble-bot p-3 rounded-lg max-w-xs">Hello! How can I help you today? I can add items to your cart. For medical advice, please see a doctor.</div></div></div>
+            <div class="p-4 border-t border-gray-200"><div class="flex"><input type="text" id="chat-input" placeholder="Ask a question..." class="flex-1 px-4 py-2 border rounded-l-lg focus:outline-none"><button id="send-chat" class="bg-green-600 text-white px-4 rounded-r-lg font-semibold hover:bg-green-700">Send</button></div></div>
         </div>
     </div>
-
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="container mx-auto px-6 text-center">
-            <p>&copy; 2024 Sahyog Medical. All Rights Reserved.</p>
-        </div>
-    </footer>
+    
+    <footer class="bg-gray-800 text-white py-8"><div class="container mx-auto px-6 text-center"><p>&copy; 2024 Sahyog Medical. All Rights Reserved.</p></div></footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const API_URL = 'http://localhost:3000/api'; // The URL of our backend server
+            const apiKey = ""; // IMPORTANT: ADD YOUR GOOGLE AI API KEY HERE for the AI agent
 
             // --- Element Selectors ---
+            const productList = document.getElementById('product-list');
+            const adminProductList = document.getElementById('admin-product-list');
+            const ordersTableBody = document.getElementById('orders-table-body');
+            const addProductForm = document.getElementById('add-product-form');
+            const cartCountElement = document.getElementById('cart-count');
+            const cartItemsContainer = document.getElementById('cart-items-container');
+            const cartTotalElement = document.getElementById('cart-total');
+
+            // --- Modals and Auth buttons ---
+            const loginBtn = document.getElementById('login-btn');
+            const registerBtn = document.getElementById('register-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+            const profileBtn = document.getElementById('profile-btn');
+            const cartBtn = document.getElementById('cart-btn');
+            const loggedInView = document.getElementById('logged-in-view');
+            const loggedOutView = document.getElementById('logged-out-view');
+            const usernameDisplay = document.getElementById('username-display');
+            const adminPanelLink = document.getElementById('admin-panel-link');
+            const adminPanelLinkMobile = document.getElementById('admin-panel-link-mobile');
+            const adminPanel = document.getElementById('admin-panel');
+            const loginModal = document.getElementById('login-modal');
+            const registerModal = document.getElementById('register-modal');
+            const profileModal = document.getElementById('profile-modal');
+            const cartModal = document.getElementById('cart-modal');
+            const closeModalBtns = document.querySelectorAll('.close-modal');
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const profileForm = document.getElementById('profile-form');
+
+            // --- State Management ---
+            let cart = JSON.parse(localStorage.getItem('sahyog_cart')) || [];
+            let products = [];
+
+            // --- Generic API Fetch Function ---
+            const apiRequest = async (endpoint, method = 'GET', body = null, auth = true) => {
+                const headers = { 'Content-Type': 'application/json' };
+                const token = localStorage.getItem('sahyog_token');
+                if (auth && token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+                const options = { method, headers };
+                if (body) {
+                    options.body = JSON.stringify(body);
+                }
+                try {
+                    const response = await fetch(`${API_URL}${endpoint}`, options);
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'An error occurred');
+                    }
+                    // For DELETE requests with no content
+                    if (response.status === 204) return; 
+                    return response.json();
+                } catch (error) {
+                    showNotification(error.message, true);
+                    console.error('API Request Error:', error);
+                    throw error;
+                }
+            };
+
+            // --- Product Functions ---
+            const fetchProducts = async () => {
+                try {
+                    products = await apiRequest('/products', 'GET', null, false);
+                    renderProducts();
+                    if(document.body.contains(adminProductList)) renderAdminProducts();
+                } catch (error) {
+                    productList.innerHTML = '<p class="text-center col-span-full text-red-500">Could not load products. Is the server running?</p>';
+                }
+            };
+
+            const renderProducts = () => {
+                productList.innerHTML = '';
+                if(products.length === 0) {
+                    productList.innerHTML = '<p class="text-center col-span-full">No products available at the moment.</p>';
+                    return;
+                }
+                products.forEach(product => {
+                    const productCard = `
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition duration-300">
+                            <img src="${product.imageUrl || 'https://placehold.co/400x300/e2e8f0/333333?text=No+Image'}" alt="${product.name}" class="w-full h-48 object-cover">
+                            <div class="p-6">
+                                <h3 class="font-semibold text-lg mb-2">${product.name}</h3>
+                                <p class="text-gray-600 mb-4">₹${product.price.toFixed(2)}</p>
+                                <button class="w-full bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700 transition duration-300 add-to-cart-btn" data-product-id="${product._id}">Add to Cart</button>
+                            </div>
+                        </div>`;
+                    productList.innerHTML += productCard;
+                });
+            };
+
+            // --- Cart Functions ---
+            const addToCart = (productId) => {
+                const product = products.find(p => p._id === productId);
+                if (!product) return;
+
+                const cartItem = cart.find(item => item.productId === productId);
+                if (cartItem) {
+                    cartItem.quantity++;
+                } else {
+                    cart.push({ productId, name: product.name, price: product.price, quantity: 1 });
+                }
+                saveCartAndRender();
+                showNotification(`${product.name} added to cart!`);
+            };
+            
+            const removeFromCart = (productId) => {
+                cart = cart.filter(item => item.productId !== productId);
+                saveCartAndRender();
+            };
+
+            const updateCartQuantity = (productId, newQuantity) => {
+                const item = cart.find(item => item.productId === productId);
+                if (item) {
+                    item.quantity = newQuantity;
+                    if (item.quantity <= 0) {
+                        removeFromCart(productId);
+                    } else {
+                        saveCartAndRender();
+                    }
+                }
+            };
+
+            const saveCartAndRender = () => {
+                localStorage.setItem('sahyog_cart', JSON.stringify(cart));
+                renderCart();
+            };
+
+            const renderCart = () => {
+                cartCountElement.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+                cartCountElement.classList.toggle('hidden', cart.length === 0);
+                
+                cartItemsContainer.innerHTML = '';
+                let total = 0;
+                if (cart.length === 0) {
+                    cartItemsContainer.innerHTML = '<p class="text-gray-500 text-center">Your cart is empty.</p>';
+                } else {
+                    cart.forEach(item => {
+                        cartItemsContainer.innerHTML += `
+                            <div class="flex justify-between items-center py-2 border-b">
+                                <div>
+                                    <p class="font-semibold">${item.name}</p>
+                                    <p class="text-sm text-gray-500">₹${item.price.toFixed(2)}</p>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="number" value="${item.quantity}" min="1" class="w-16 text-center border rounded mx-2 cart-quantity-input" data-product-id="${item.productId}">
+                                    <button class="text-red-500 hover:text-red-700 text-2xl remove-from-cart-btn" data-product-id="${item.productId}">&times;</button>
+                                </div>
+                            </div>`;
+                        total += item.price * item.quantity;
+                    });
+                }
+                cartTotalElement.textContent = total.toFixed(2);
+            };
+            
+            document.getElementById('place-order-from-cart-btn').addEventListener('click', async () => {
+                if (cart.length === 0) {
+                    showNotification('Your cart is empty.', true);
+                    return;
+                }
+                try {
+                    const orderData = {
+                        products: cart.map(item => ({ product: item.productId, quantity: item.quantity })),
+                        totalPrice: cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
+                    };
+                    const result = await apiRequest('/orders', 'POST', orderData);
+                    showNotification(result.message);
+                    cart = [];
+                    saveCartAndRender();
+                    hideModals();
+                    // if admin is logged in, refresh orders
+                    const user = JSON.parse(localStorage.getItem('sahyog_user'));
+                    if(user && user.role === 'admin') fetchAdminData();
+                } catch (error) {
+                    // Notification is shown by apiRequest
+                }
+            });
+
+
+            // --- Authentication & UI ---
+            const updateUIForLogin = (data) => {
+                localStorage.setItem('sahyog_token', data.token);
+                localStorage.setItem('sahyog_user', JSON.stringify(data.user));
+                loggedInView.classList.remove('hidden');
+                loggedOutView.classList.add('hidden');
+                usernameDisplay.textContent = data.user.email.split('@')[0];
+                const isAdmin = data.user.role === 'admin';
+                adminPanelLink.classList.toggle('hidden', !isAdmin);
+                adminPanelLinkMobile.classList.toggle('hidden', !isAdmin);
+                adminPanel.classList.toggle('hidden', !isAdmin);
+                if (isAdmin) {
+                    fetchAdminData();
+                }
+            };
+            
+            const logout = () => {
+                localStorage.removeItem('sahyog_token');
+                localStorage.removeItem('sahyog_user');
+                loggedInView.classList.add('hidden');
+                loggedOutView.classList.remove('hidden');
+                adminPanel.classList.add('hidden');
+                adminPanelLink.classList.add('hidden');
+                adminPanelLinkMobile.classList.add('hidden');
+                showNotification('Logged out successfully.');
+            };
+
+            const checkLoginStatus = () => {
+                const token = localStorage.getItem('sahyog_token');
+                const user = JSON.parse(localStorage.getItem('sahyog_user'));
+                if (token && user) {
+                    updateUIForLogin({ token, user });
+                }
+            };
+
+            // --- Admin Functions ---
+            const fetchAdminData = async () => {
+                try {
+                    // products are already fetched on load, just get orders
+                    const orders = await apiRequest('/orders', 'GET');
+                    renderOrders(orders);
+                } catch (error) {
+                    console.error("Failed to fetch admin data", error);
+                }
+            };
+
+            const renderAdminProducts = () => {
+                adminProductList.innerHTML = '<h4 class="font-semibold text-lg mb-2">Existing Products</h4>';
+                products.forEach(p => {
+                    adminProductList.innerHTML += `
+                    <div class="flex justify-between items-center p-2 border-b">
+                        <span>${p.name} - ₹${p.price.toFixed(2)}</span>
+                        <div>
+                           <button class="text-blue-500 mr-2 edit-product-btn" data-product-id="${p._id}">Edit</button>
+                           <button class="text-red-500 delete-product-btn" data-product-id="${p._id}">Delete</button>
+                        </div>
+                    </div>`;
+                });
+            };
+
+            const renderOrders = (orders) => {
+                ordersTableBody.innerHTML = '';
+                if(orders.length === 0){
+                    ordersTableBody.innerHTML = '<tr><td colspan="5" class="text-center p-4">No orders yet.</td></tr>';
+                    return;
+                }
+                orders.slice().reverse().forEach(order => {
+                    ordersTableBody.innerHTML += `
+                        <tr>
+                            <td class="p-4 border-b">${order._id}</td>
+                            <td class="p-4 border-b">${order.user?.email || 'N/A'}</td>
+                            <td class="p-4 border-b">${order.products.map(p => `${p.quantity} x ${p.product?.name || 'Deleted Product'}`).join('<br>')}</td>
+                            <td class="p-4 border-b">₹${order.totalPrice.toFixed(2)}</td>
+                            <td class="p-4 border-b">${new Date(order.createdAt).toLocaleString()}</td>
+                        </tr>`;
+                });
+            };
+            
+            addProductForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = document.getElementById('product-id').value;
+                const productData = {
+                    name: document.getElementById('product-name').value,
+                    price: parseFloat(document.getElementById('product-price').value),
+                    imageUrl: document.getElementById('product-image').value,
+                };
+                try {
+                    if (id) { // Update
+                        await apiRequest(`/products/${id}`, 'PUT', productData);
+                        showNotification('Product updated successfully!');
+                    } else { // Create
+                        await apiRequest('/products', 'POST', productData);
+                        showNotification('Product added successfully!');
+                    }
+                    addProductForm.reset();
+                    document.getElementById('product-id').value = '';
+                    fetchProducts();
+                } catch(error) { /* Handled by apiRequest */ }
+            });
+
+            document.getElementById('clear-product-form').addEventListener('click', () => {
+                 addProductForm.reset();
+                 document.getElementById('product-id').value = '';
+            });
+
+            // --- Event Delegation ---
+            document.body.addEventListener('click', async e => {
+                // Add to Cart
+                if (e.target.classList.contains('add-to-cart-btn')) {
+                    addToCart(e.target.dataset.productId);
+                }
+                // Admin Edit Product
+                if(e.target.classList.contains('edit-product-btn')) {
+                    const product = products.find(p => p._id === e.target.dataset.productId);
+                    if(product) {
+                        document.getElementById('product-id').value = product._id;
+                        document.getElementById('product-name').value = product.name;
+                        document.getElementById('product-price').value = product.price;
+                        document.getElementById('product-image').value = product.imageUrl;
+                        addProductForm.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+                // Admin Delete Product
+                if (e.target.classList.contains('delete-product-btn')) {
+                    if (confirm('Are you sure you want to delete this product?')) {
+                        try {
+                            await apiRequest(`/products/${e.target.dataset.productId}`, 'DELETE');
+                            showNotification('Product deleted.');
+                            fetchProducts();
+                        } catch(err) { /* Handled by apiRequest */ }
+                    }
+                }
+                // Cart remove
+                if (e.target.classList.contains('remove-from-cart-btn')) {
+                    removeFromCart(e.target.dataset.productId);
+                }
+            });
+
+             document.body.addEventListener('change', e => {
+                // Cart quantity update
+                if(e.target.classList.contains('cart-quantity-input')) {
+                    const newQuantity = parseInt(e.target.value, 10);
+                    updateCartQuantity(e.target.dataset.productId, newQuantity);
+                }
+            });
+
+            loginForm.addEventListener('submit', async e => {
+                e.preventDefault();
+                const body = { email: e.target.elements['login-email'].value, password: e.target.elements['login-password'].value };
+                try {
+                    const data = await apiRequest('/auth/login', 'POST', body, false);
+                    updateUIForLogin(data);
+                    hideModals();
+                    showNotification('Login successful!');
+                } catch(error) { /* Handled by apiRequest */ }
+            });
+            registerForm.addEventListener('submit', async e => {
+                e.preventDefault();
+                const body = { email: e.target.elements['register-email'].value, password: e.target.elements['register-password'].value };
+                try {
+                    const data = await apiRequest('/auth/register', 'POST', body, false);
+                    updateUIForLogin(data);
+                    hideModals();
+                    showNotification('Registration successful!');
+                } catch(error) { /* Handled by apiRequest */ }
+            });
+            profileForm.addEventListener('submit', async e => {
+                e.preventDefault();
+                try {
+                    const data = await apiRequest('/users/profile', 'PUT', { address: e.target.elements['profile-address'].value });
+                    localStorage.setItem('sahyog_user', JSON.stringify(data.user)); // Update local user data
+                    hideModals();
+                    showNotification('Profile updated!');
+                } catch (error) { /* Handled by apiRequest */ }
+            });
+
+            // --- Modal and UI Listeners ---
+            loginBtn.addEventListener('click', () => showModal(loginModal));
+            registerBtn.addEventListener('click', () => showModal(registerModal));
+            cartBtn.addEventListener('click', () => showModal(cartModal));
+            profileBtn.addEventListener('click', async () => {
+                try {
+                    const data = await apiRequest('/users/profile', 'GET');
+                    document.getElementById('profile-email-display').textContent = data.user.email;
+                    document.getElementById('profile-address').value = data.user.address || '';
+                    showModal(profileModal);
+                } catch(error) { }
+            });
+            logoutBtn.addEventListener('click', logout);
+            closeModalBtns.forEach(btn => btn.addEventListener('click', hideModals));
+            document.getElementById('mobile-menu-btn').addEventListener('click', () => document.getElementById('mobile-menu').classList.toggle('hidden'));
+            function showModal(modal) { modal.classList.remove('hidden'); modal.classList.add('flex'); }
+            function hideModals() { document.querySelectorAll('.modal').forEach(m => { m.classList.add('hidden'); m.classList.remove('flex'); }); }
+
+            // --- General & Notification ---
+            function showNotification(message, isError = false) {
+                const el = document.getElementById('notification');
+                el.textContent = message;
+                el.classList.toggle('bg-red-500', isError);
+                el.classList.toggle('bg-green-600', !isError);
+                el.classList.remove('translate-x-full');
+                setTimeout(() => el.classList.add('translate-x-full'), 3000);
+            }
+            
+            // --- AI Chat Agent (Simplified to just add to cart) ---
             const chatButton = document.getElementById('chat-button');
             const chatWindow = document.getElementById('chat-window');
             const closeChatButton = document.getElementById('close-chat');
             const chatInput = document.getElementById('chat-input');
             const sendChatButton = document.getElementById('send-chat');
             const chatMessages = document.getElementById('chat-messages');
-            const cartCountElement = document.getElementById('cart-count');
-            const notificationElement = document.getElementById('notification');
-            const cartBtn = document.getElementById('cart-btn');
-
-            const loginBtn = document.getElementById('login-btn');
-            const registerBtn = document.getElementById('register-btn');
-            const logoutBtn = document.getElementById('logout-btn');
-            const profileBtn = document.getElementById('profile-btn');
-            const loggedInView = document.getElementById('logged-in-view');
-            const loggedOutView = document.getElementById('logged-out-view');
-            const usernameDisplay = document.getElementById('username-display');
-            const adminPanelLink = document.getElementById('admin-panel-link');
-            const adminPanel = document.getElementById('admin-panel');
             
-            const loginModal = document.getElementById('login-modal');
-            const registerModal = document.getElementById('register-modal');
-            const profileModal = document.getElementById('profile-modal');
-            const cartModal = document.getElementById('cart-modal');
-            const closeModalBtns = document.querySelectorAll('.close-modal');
-
-            const loginForm = document.getElementById('login-form');
-            const registerForm = document.getElementById('register-form');
-            const profileForm = document.getElementById('profile-form');
-
-            // --- State Management ---
-            let cart = [];
-            const apiKey = "AIzaSyATCZ7hw8zkuQaByE1LJI-GE-nMaaYlB-0"; // IMPORTANT: ADD YOUR API KEY HERE
-            
-            // --- Local Storage Initialization ---
-            const getUsers = () => JSON.parse(localStorage.getItem('sahyog_users')) || [];
-            const saveUsers = (users) => localStorage.setItem('sahyog_users', JSON.stringify(users));
-            const getCurrentUser = () => JSON.parse(localStorage.getItem('sahyog_currentUser'));
-            const setCurrentUser = (user) => localStorage.setItem('sahyog_currentUser', JSON.stringify(user));
-            const removeCurrentUser = () => localStorage.removeItem('sahyog_currentUser');
-            const getOrders = () => JSON.parse(localStorage.getItem('sahyog_orders')) || [];
-            const saveOrders = (orders) => localStorage.setItem('sahyog_orders', JSON.stringify(orders));
-
-            function initializeAdmin() {
-                let users = getUsers();
-                if (!users.find(u => u.username === 'admin')) {
-                    users.push({ username: 'admin', email: 'admin@sahyog.com', password: 'adminsahyog', address: 'Admin Address' });
-                    saveUsers(users);
-                    console.log('Admin user created.');
-                }
-            }
-
-            // --- UI Update Functions ---
-            function updateUI() {
-                const user = getCurrentUser();
-                if (user) {
-                    loggedInView.classList.remove('hidden');
-                    loggedOutView.classList.add('hidden');
-                    usernameDisplay.textContent = user.username;
-                    if (user.username === 'admin') {
-                        adminPanelLink.classList.remove('hidden');
-                        adminPanel.classList.remove('hidden');
-                        displayOrders();
-                    } else {
-                        adminPanelLink.classList.add('hidden');
-                        adminPanel.classList.add('hidden');
-                    }
-                } else {
-                    loggedInView.classList.add('hidden');
-                    loggedOutView.classList.remove('hidden');
-                    adminPanelLink.classList.add('hidden');
-                    adminPanel.classList.add('hidden');
-                }
-            }
-
-            function showModal(modal) {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-            }
-
-            function hideModals() {
-                document.querySelectorAll('.modal').forEach(modal => {
-                    modal.classList.add('hidden');
-                    modal.classList.remove('flex');
-                });
-            }
-            
-            // --- User Authentication & Profile ---
-            loginBtn.addEventListener('click', () => showModal(loginModal));
-            registerBtn.addEventListener('click', () => showModal(registerModal));
-            profileBtn.addEventListener('click', () => {
-                const user = getCurrentUser();
-                if(user) {
-                    document.getElementById('profile-username').textContent = user.username;
-                    document.getElementById('profile-email').value = user.email;
-                    document.getElementById('profile-address').value = user.address || '';
-                    showModal(profileModal);
-                }
-            });
-            
-            cartBtn.addEventListener('click', () => {
-                displayCartItems();
-                showModal(cartModal);
-            });
-
-            closeModalBtns.forEach(btn => btn.addEventListener('click', hideModals));
-
-            registerForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const username = document.getElementById('register-username').value;
-                const email = document.getElementById('register-email').value;
-                const password = document.getElementById('register-password').value;
-                let users = getUsers();
-                if (users.find(u => u.username === username)) {
-                    showNotification('Username already exists!');
-                    return;
-                }
-                const newUser = { username, email, password, address: '' };
-                users.push(newUser);
-                saveUsers(users);
-                setCurrentUser(newUser);
-                hideModals();
-                updateUI();
-                showNotification(`Welcome, ${username}!`);
-            });
-
-            loginForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const username = document.getElementById('login-username').value;
-                const password = document.getElementById('login-password').value;
-                let users = getUsers();
-                const user = users.find(u => u.username === username && u.password === password);
-                if (user) {
-                    setCurrentUser(user);
-                    hideModals();
-                    updateUI();
-                    showNotification(`Welcome back, ${username}!`);
-                } else {
-                    showNotification('Invalid username or password.');
-                }
-            });
-
-            logoutBtn.addEventListener('click', () => {
-                removeCurrentUser();
-                updateUI();
-                showNotification('Logged out successfully.');
-            });
-
-            profileForm.addEventListener('submit', e => {
-                e.preventDefault();
-                const user = getCurrentUser();
-                if (!user) return;
-
-                const email = document.getElementById('profile-email').value;
-                const address = document.getElementById('profile-address').value;
-
-                let users = getUsers();
-                const userIndex = users.findIndex(u => u.username === user.username);
-                
-                users[userIndex].email = email;
-                users[userIndex].address = address;
-
-                saveUsers(users);
-                setCurrentUser(users[userIndex]);
-                hideModals();
-                updateUI();
-                showNotification('Profile updated!');
-            });
-            
-            // --- Admin Panel ---
-            function displayOrders() {
-                const orders = getOrders();
-                const tableBody = document.getElementById('orders-table-body');
-                tableBody.innerHTML = '';
-                if(orders.length === 0){
-                    tableBody.innerHTML = '<tr><td colspan="4" class="text-center p-4">No orders yet.</td></tr>';
-                    return;
-                }
-                orders.slice().reverse().forEach(order => {
-                    const row = `
-                        <tr>
-                            <td class="p-4 border-b">${order.id}</td>
-                            <td class="p-4 border-b">${order.user}</td>
-                            <td class="p-4 border-b">${order.product}</td>
-                            <td class="p-4 border-b">${new Date(order.timestamp).toLocaleString()}</td>
-                        </tr>
-                    `;
-                    tableBody.innerHTML += row;
-                });
-            }
-
-            // --- Chat, Cart, Notification Functions ---
-            function updateCartDisplay() {
-                cartCountElement.textContent = cart.length;
-                if (cart.length > 0) cartCountElement.classList.remove('hidden');
-                else cartCountElement.classList.add('hidden');
-            }
-
-            function displayCartItems() {
-                const cartItemsContainer = document.getElementById('cart-items-container');
-                cartItemsContainer.innerHTML = '';
-                if (cart.length === 0) {
-                    cartItemsContainer.innerHTML = '<p class="text-gray-500 text-center">Your cart is empty.</p>';
-                    return;
-                }
-                cart.forEach(item => {
-                    const itemElement = document.createElement('div');
-                    itemElement.className = 'flex justify-between items-center py-2 border-b';
-                    itemElement.textContent = item;
-                    cartItemsContainer.appendChild(itemElement);
-                });
-            }
-
-            function showNotification(message) {
-                notificationElement.textContent = message;
-                notificationElement.classList.remove('translate-x-full');
-                setTimeout(() => {
-                    notificationElement.classList.add('translate-x-full');
-                }, 3000);
-            }
-
-            function addToCart(productName) {
-                const products = ["Pain Relief Tablets", "Multivitamin Syrup", "Adhesive Bandages", "Hand Sanitizer"];
-                const foundProduct = products.find(p => p.toLowerCase().includes(productName.toLowerCase()));
-                if (foundProduct) {
-                    cart.push(foundProduct);
-                    updateCartDisplay();
-                    showNotification(`${foundProduct} added to cart!`);
-                } else {
-                    showNotification(`Could not find "${productName}".`);
-                }
-            }
-             document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-                button.addEventListener('click', () => {
-                    addToCart(button.dataset.product);
-                });
-            });
-
-            function placeOrder(productName) {
-                const user = getCurrentUser();
-                if (!user) {
-                    return "You need to be logged in to place an order. Please log in first.";
-                }
-                const products = ["Pain Relief Tablets", "Multivitamin Syrup", "Adhesive Bandages", "Hand Sanitizer"];
-                const foundProduct = products.find(p => p.toLowerCase().includes(productName.toLowerCase()));
-
-                if (foundProduct) {
-                    let orders = getOrders();
-                    const newOrder = {
-                        id: 'SM' + Date.now(),
-                        user: user.username,
-                        product: foundProduct,
-                        timestamp: new Date().toISOString()
-                    };
-                    orders.push(newOrder);
-                    saveOrders(orders);
-                    showNotification(`Order placed for ${foundProduct}!`);
-                     if(user.username === 'admin') displayOrders(); // Refresh admin view
-                    return `Your order for ${foundProduct} has been placed successfully.`;
-                } else {
-                    return `Sorry, we could not find the product "${productName}".`;
-                }
-            }
-            
-             const handleSendMessage = async () => {
-                const userMessage = chatInput.value.trim();
-                if (userMessage === '') return;
-                appendMessage(userMessage, 'user');
-                chatInput.value = '';
-                showTypingIndicator();
-                try {
-                    const aiResponse = await getAIResponse(userMessage);
-                    const part = aiResponse.candidates?.[0]?.content?.parts?.[0];
-
-                    removeTypingIndicator();
-                    if (part?.functionCall) {
-                        const { name, args } = part.functionCall;
-                        let resultMessage = "An error occurred.";
-                        if (name === 'addToCart') {
-                           addToCart(args.productName || '');
-                           resultMessage = `I've added ${args.productName} to your cart. Is there anything else?`;
-                        } else if (name === 'placeOrder') {
-                           resultMessage = placeOrder(args.productName || '');
-                        }
-                        appendMessage(resultMessage, 'bot');
-
-                    } else if (part?.text) {
-                        appendMessage(part.text, 'bot');
-                    } else {
-                         appendMessage("I'm sorry, I encountered an issue.", 'bot');
-                    }
-                } catch (error) {
-                    removeTypingIndicator();
-                    appendMessage('Sorry, something went wrong.', 'bot');
-                    console.error('Error:', error);
-                }
-            };
-            
-            // --- Event Listeners for Chat ---
-            chatButton.addEventListener('click', () => {
-                chatWindow.classList.toggle('hidden');
-                setTimeout(() => {
-                   chatWindow.classList.toggle('opacity-0');
-                   chatWindow.classList.toggle('translate-y-2');
-                }, 10);
-            });
-            closeChatButton.addEventListener('click', () => {
-                chatWindow.classList.add('opacity-0', 'translate-y-2');
-                setTimeout(() => chatWindow.classList.add('hidden'), 300);
-            });
+            chatButton.addEventListener('click', () => { chatWindow.classList.toggle('hidden'); setTimeout(() => { chatWindow.classList.toggle('opacity-0'); chatWindow.classList.toggle('translate-y-2'); }, 10); });
+            closeChatButton.addEventListener('click', () => { chatWindow.classList.add('opacity-0', 'translate-y-2'); setTimeout(() => chatWindow.classList.add('hidden'), 300); });
             sendChatButton.addEventListener('click', handleSendMessage);
             chatInput.addEventListener('keypress', (e) => e.key === 'Enter' && handleSendMessage());
 
             function appendMessage(message, sender) {
                 const msgWrapper = document.createElement('div');
                 msgWrapper.className = `flex mb-4 ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
-                const msgBubble = document.createElement('div');
-                msgBubble.className = `p-3 rounded-lg max-w-xs ${sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-bot'}`;
-                msgBubble.textContent = message;
-                msgWrapper.appendChild(msgBubble);
+                msgWrapper.innerHTML = `<div class="p-3 rounded-lg max-w-xs ${sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-bot'}">${message}</div>`;
                 chatMessages.appendChild(msgWrapper);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
 
-            function showTypingIndicator() {
-                const indicator = `<div id="typing-indicator" class="flex mb-4 items-center"><div class="chat-bubble-bot p-3 rounded-lg typing-indicator"><span></span><span></span><span></span></div></div>`;
-                chatMessages.insertAdjacentHTML('beforeend', indicator);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
+            async function handleSendMessage() {
+                const userMessage = chatInput.value.trim();
+                if (!userMessage) return;
+                appendMessage(userMessage, 'user');
+                chatInput.value = '';
 
-            function removeTypingIndicator() {
-                document.getElementById('typing-indicator')?.remove();
-            }
-
-            async function getAIResponse(userQuery) {
-                if (!apiKey) throw new Error("API Key is missing.");
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-                const systemPrompt = `You are an AI assistant for 'Sahyog Medical'. Your capabilities include answering questions and helping users with their shopping cart and orders using specialized tools.
-
-**Tools:**
-* 'addToCart': Use when a user wants to add a product to their cart. Example: "Add painkillers to my cart".
-* 'placeOrder': Use when a user explicitly wants to buy or order a product. This is a final action. Example: "I want to buy the sanitizer", "Order the multivitamin syrup".
-
-**Logic:**
-* Before placing an order, confirm if the user is logged in. The 'placeOrder' function will handle this check.
-* **Products:** Pain Relief Tablets, Multivitamin Syrup, Adhesive Bandages, Hand Sanitizer.
-* **Store Info:** Open 9 AM-9 PM, Mon-Sat. Location: 123 Health St, Wellness City.
-* **Medical Advice Rule:** NEVER provide medical advice. Politely decline and advise consulting a doctor.`;
+                // Simple keyword matching for cart
+                const lowerMessage = userMessage.toLowerCase();
+                const addKeyword = lowerMessage.includes('add') || lowerMessage.includes('put');
                 
-                const payload = {
-                    contents: [{ parts: [{ text: userQuery }] }],
-                    systemInstruction: { parts: [{ text: systemPrompt }] },
-                    tools: [{
-                        functionDeclarations: [
-                            {
-                                name: "addToCart",
-                                description: "Adds a product to the cart.",
-                                parameters: { type: "OBJECT", properties: { productName: { type: "STRING", description: "Product to add." }}, required: ["productName"] }
-                            },
-                            {
-                                name: "placeOrder",
-                                description: "Places an order for a product for the logged-in user.",
-                                parameters: { type: "OBJECT", properties: { productName: { type: "STRING", description: "Product to order." }}, required: ["productName"] }
-                            }
-                        ]
-                    }]
-                };
+                let botResponse = "I can help add items to your cart. What would you like?";
 
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if (!response.ok) throw new Error(`API Error: ${response.status}`);
-                return response.json();
+                if (addKeyword) {
+                    const foundProduct = products.find(p => lowerMessage.includes(p.name.toLowerCase().replace(/ tablets| syrup| bandages/g,'')));
+                    if (foundProduct) {
+                        addToCart(foundProduct._id);
+                        botResponse = `Okay, I've added ${foundProduct.name} to your cart.`;
+                    } else {
+                        botResponse = "Sorry, I couldn't find that product. Our available products are: " + products.map(p=>p.name).join(', ');
+                    }
+                }
+                appendMessage(botResponse, 'bot');
             }
 
-            // Initial UI setup
-            initializeAdmin();
-            updateUI();
+
+            // --- App Initialization ---
+            const initializeApp = async () => {
+                await fetchProducts();
+                checkLoginStatus();
+                renderCart();
+            };
+            
+            initializeApp();
         });
     </script>
-
 </body>
 </html>
 
