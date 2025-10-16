@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahyog Medical - Your Health Partner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chat-window {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+        .chat-bubble-user {
+            background-color: #dcf8c6;
+        }
+        .chat-bubble-bot {
+            background-color: #f1f0f0;
+        }
+        .typing-indicator span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #9ca3af;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1.0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-green-700">
+                <i class="fas fa-heartbeat mr-2"></i>Sahyog Medical
+            </div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#home" class="text-gray-600 hover:text-green-700">Home</a>
+                <a href="#products" class="text-gray-600 hover:text-green-700">Products</a>
+                <a href="#about" class="text-gray-600 hover:text-green-700">About</a>
+                <a href="#contact" class="text-gray-600 hover:text-green-700">Contact</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                 <button class="relative text-gray-600 hover:text-green-700 focus:outline-none">
+                    <i class="fas fa-shopping-cart text-xl"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+                </button>
+                <button class="md:hidden text-gray-600 hover:text-green-700">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="bg-green-100 py-20">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-5xl font-bold text-green-800 mb-4">Your Trusted Health Partner</h1>
+                <p class="text-lg text-gray-700 mb-8">Providing quality medicines and healthcare products with care.</p>
+                <a href="#products" class="bg-green-600 text-white font-semibold px-8 py-3 rounded-full hover:bg-green-700 transition duration-300">Shop Now</a>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section id="products" class="py-16">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Featured Products</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                    <!-- Product Card 1 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition duration-300">
+                        <img src="https://placehold.co/400x300/e2e8f0/333333?text=Painkiller" alt="Painkiller" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="font-semibold text-lg mb-2">Pain Relief Tablets</h3>
+                            <p class="text-gray-600 mb-4">₹120.00</p>
+                            <button class="w-full bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700 transition duration-300">Add to Cart</button>
+                        </div>
+                    </div>
+                    <!-- Product Card 2 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition duration-300">
+                        <img src="https://placehold.co/400x300/e2e8f0/333333?text=Vitamins" alt="Vitamins" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="font-semibold text-lg mb-2">Multivitamin Syrup</h3>
+                            <p class="text-gray-600 mb-4">₹250.00</p>
+                            <button class="w-full bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700 transition duration-300">Add to Cart</button>
+                        </div>
+                    </div>
+                    <!-- Product Card 3 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition duration-300">
+                        <img src="https://placehold.co/400x300/e2e8f0/333333?text=Bandages" alt="Bandages" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="font-semibold text-lg mb-2">Adhesive Bandages</h3>
+                            <p class="text-gray-600 mb-4">₹80.00</p>
+                            <button class="w-full bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700 transition duration-300">Add to Cart</button>
+                        </div>
+                    </div>
+                    <!-- Product Card 4 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition duration-300">
+                        <img src="https://placehold.co/400x300/e2e8f0/333333?text=Sanitizer" alt="Sanitizer" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="font-semibold text-lg mb-2">Hand Sanitizer</h3>
+                            <p class="text-gray-600 mb-4">₹150.00</p>
+                            <button class="w-full bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700 transition duration-300">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="bg-white py-16">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">About Sahyog Medical</h2>
+                <p class="max-w-3xl mx-auto text-center text-gray-600 leading-relaxed">
+                    Sahyog Medical has been serving the community for over a decade, committed to providing accessible and affordable healthcare solutions. We believe in building lasting relationships with our customers by offering genuine products and expert advice. Our mission is to be your most trusted partner in health and wellness.
+                </p>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="bg-gray-50 py-16">
+             <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Get In Touch</h2>
+                <div class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-md">
+                   <form>
+                       <div class="mb-4">
+                           <label for="name" class="block text-gray-700 font-semibold mb-2">Name</label>
+                           <input type="text" id="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Your Name">
+                       </div>
+                       <div class="mb-4">
+                           <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
+                           <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Your Email">
+                       </div>
+                       <div class="mb-6">
+                           <label for="message" class="block text-gray-700 font-semibold mb-2">Message</label>
+                           <textarea id="message" rows="4" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Your Message"></textarea>
+                       </div>
+                       <button type="submit" class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition duration-300">Send Message</button>
+                   </form>
+                </div>
+             </div>
+        </section>
+    </main>
+
+    <!-- Add to cart notification -->
+    <div id="notification" class="fixed top-20 right-5 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-50">
+        <!-- Message will be set by JS -->
+    </div>
+    
+    <!-- AI Chat Agent -->
+    <div id="ai-chat-container" class="fixed bottom-5 right-5 z-50">
+        <!-- Chat Button -->
+        <button id="chat-button" class="bg-green-600 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center text-2xl hover:bg-green-700 transition duration-300">
+            <i class="fas fa-robot"></i>
+        </button>
+        <!-- Chat Window -->
+        <div id="chat-window" class="chat-window hidden absolute bottom-20 right-0 w-80 sm:w-96 bg-white rounded-lg shadow-xl border border-gray-200 flex flex-col opacity-0 transform translate-y-2">
+            <!-- Header -->
+            <div class="bg-green-600 text-white p-4 rounded-t-lg flex justify-between items-center">
+                <h3 class="font-semibold text-lg">Sahyog AI Assistant</h3>
+                <button id="close-chat" class="text-white text-xl">&times;</button>
+            </div>
+            <!-- Messages -->
+            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto h-80">
+                <div class="flex mb-4">
+                    <div class="chat-bubble-bot p-3 rounded-lg max-w-xs">
+                        Hello! How can I help you today? You can ask me to add items to your cart. Please note: I cannot provide medical advice.
+                    </div>
+                </div>
+            </div>
+            <!-- Input -->
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex">
+                    <input type="text" id="chat-input" placeholder="Ask a question..." class="flex-1 px-4 py-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <button id="send-chat" class="bg-green-600 text-white px-4 rounded-r-lg font-semibold hover:bg-green-700">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2024 Sahyog Medical. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- AI Chat Agent Logic ---
+        const chatButton = document.getElementById('chat-button');
+        const chatWindow = document.getElementById('chat-window');
+        const closeChatButton = document.getElementById('close-chat');
+        const chatInput = document.getElementById('chat-input');
+        const sendChatButton = document.getElementById('send-chat');
+        const chatMessages = document.getElementById('chat-messages');
+        const cartCountElement = document.getElementById('cart-count');
+        const notificationElement = document.getElementById('notification');
+        
+        let cartCount = 0;
+        const apiKey = "AIzaSyATCZ7hw8zkuQaByE1LJI-GE-nMaaYlB-0"; 
+
+        // Toggle chat window
+        chatButton.addEventListener('click', () => {
+            chatWindow.classList.toggle('hidden');
+            setTimeout(() => {
+               chatWindow.classList.toggle('opacity-0');
+               chatWindow.classList.toggle('translate-y-2');
+            }, 10);
+        });
+
+        closeChatButton.addEventListener('click', () => {
+            chatWindow.classList.add('opacity-0');
+            chatWindow.classList.add('translate-y-2');
+            setTimeout(() => {
+                chatWindow.classList.add('hidden');
+            }, 300);
+        });
+        
+        // --- Cart and Notification Functions ---
+        function updateCartDisplay() {
+            cartCountElement.textContent = cartCount;
+            if (cartCount > 0) {
+                cartCountElement.classList.remove('hidden');
+            } else {
+                cartCountElement.classList.add('hidden');
+            }
+        }
+
+        function showNotification(message) {
+            notificationElement.textContent = message;
+            notificationElement.classList.remove('translate-x-full');
+            setTimeout(() => {
+                notificationElement.classList.add('translate-x-full');
+            }, 3000); // Hide after 3 seconds
+        }
+
+        function addToCart(productName) {
+            const products = ["Pain Relief Tablets", "Multivitamin Syrup", "Adhesive Bandages", "Hand Sanitizer"];
+            const normalizedProductName = productName.toLowerCase().trim();
+            // Find a product where the name is included in the user's query, e.g. "painkillers" matches "Pain Relief Tablets"
+            const foundProduct = products.find(p => p.toLowerCase().includes(normalizedProductName) || normalizedProductName.includes(p.split(' ')[0].toLowerCase()));
+
+            if (foundProduct) {
+                cartCount++;
+                updateCartDisplay();
+                showNotification(`${foundProduct} added to cart!`);
+                return `Successfully added ${foundProduct} to the cart.`;
+            } else {
+                return `Could not find the product "${productName}". Please choose from the featured products.`;
+            }
+        }
+
+        // Handle sending a message
+        const handleSendMessage = async () => {
+            const userMessage = chatInput.value.trim();
+            if (userMessage === '') return;
+
+            appendMessage(userMessage, 'user');
+            chatInput.value = '';
+            
+            showTypingIndicator();
+            try {
+                const aiResponse = await getAIResponse(userMessage);
+                const part = aiResponse.candidates?.[0]?.content?.parts?.[0];
+
+                if (part && part.functionCall) {
+                    const { name, args } = part.functionCall;
+                    if (name === 'addToCart') {
+                        const productName = args.productName || '';
+                        addToCart(productName);
+                        removeTypingIndicator();
+                        // Provide a conversational confirmation
+                        appendMessage(`OK, I've added ${productName} to your cart. Anything else?`, 'bot');
+                    }
+                } else if (part && part.text) {
+                    removeTypingIndicator();
+                    appendMessage(part.text, 'bot');
+                } else {
+                     removeTypingIndicator();
+                     appendMessage("I'm sorry, I encountered an issue. Please try again.", 'bot');
+                }
+
+            } catch (error) {
+                removeTypingIndicator();
+                appendMessage('Sorry, something went wrong. Please try again later.', 'bot');
+                console.error('Error in handleSendMessage:', error);
+            }
+        };
+
+        sendChatButton.addEventListener('click', handleSendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleSendMessage();
+            }
+        });
+
+        function appendMessage(message, sender) {
+            const messageWrapper = document.createElement('div');
+            messageWrapper.classList.add('flex', 'mb-4');
+            const messageBubble = document.createElement('div');
+            messageBubble.classList.add('p-3', 'rounded-lg', 'max-w-xs');
+            messageBubble.textContent = message;
+            if (sender === 'user') {
+                messageWrapper.classList.add('justify-end');
+                messageBubble.classList.add('chat-bubble-user');
+            } else {
+                messageWrapper.classList.add('justify-start');
+                messageBubble.classList.add('chat-bubble-bot');
+            }
+            messageWrapper.appendChild(messageBubble);
+            chatMessages.appendChild(messageWrapper);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const typingWrapper = document.createElement('div');
+            typingWrapper.id = 'typing-indicator';
+            typingWrapper.classList.add('flex', 'mb-4', 'items-center');
+            const bubble = document.createElement('div');
+            bubble.classList.add('chat-bubble-bot', 'p-3', 'rounded-lg', 'typing-indicator');
+            bubble.innerHTML = '<span></span><span></span><span></span>';
+            typingWrapper.appendChild(bubble);
+            chatMessages.appendChild(typingWrapper);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typing-indicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        }
+
+        async function getAIResponse(userQuery) {
+            if (!apiKey) {
+                 throw new Error("API Key is missing.");
+            }
+
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+            const systemPrompt = `You are a friendly and helpful AI assistant for 'Sahyog Medical', an online pharmacy. Your role is to answer customer questions. You have one special tool: 'addToCart'.
+
+**When to use tools:**
+* If the user expresses a clear intent to add a specific, listed product to their shopping cart, you MUST use the 'addToCart' function. Examples: "Add painkillers to cart", "I want the multivitamins", "Put sanitizer in my basket".
+* Do not use the tool for vague requests like "I need some medicine". Ask for clarification first.
+
+**Store Information:**
+* **Hours:** Open 9 AM to 9 PM, Monday-Saturday.
+* **Location:** 123 Health St, Wellness City.
+* **Delivery:** We offer home delivery for orders over ₹500.
+* **Payment:** We accept cash, credit/debit cards, and UPI.
+
+**Products currently featured on the page:**
+* Pain Relief Tablets
+* Multivitamin Syrup
+* Adhesive Bandages
+* Hand Sanitizer
+
+**Medical Advice Rule:**
+* You MUST NOT provide any medical advice. If asked for a diagnosis or treatment, politely decline and strongly advise consulting a qualified doctor or pharmacist.`;
+            
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                },
+                tools: [{
+                    functionDeclarations: [{
+                        name: "addToCart",
+                        description: "Adds a specified product to the user's shopping cart.",
+                        parameters: {
+                            type: "OBJECT",
+                            properties: {
+                                productName: {
+                                    type: "STRING",
+                                    description: "The name of the product to add to the cart. Must be one of the featured products like 'Pain Relief Tablets', 'Multivitamin Syrup', etc."
+                                }
+                            },
+                            required: ["productName"]
+                        }
+                    }]
+                }]
+            };
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error(`API request failed with status ${response.status}`);
+            }
+
+            return response.json();
+        }
+    </script>
+
+</body>
+</html>
+
